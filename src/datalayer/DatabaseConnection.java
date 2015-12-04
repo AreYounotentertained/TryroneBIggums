@@ -58,7 +58,7 @@ public class DatabaseConnection {
 	public ArrayList<Person> findAllPeople(){
 		connection = null;
 		Statement statement = null;
-		ArrayList<Person> person = new ArrayList<>();
+		ArrayList<Person> people = new ArrayList<>();
 
 		try {
 			connection = getConnection();
@@ -67,7 +67,7 @@ public class DatabaseConnection {
 			statement = connection.createStatement();
 			ResultSet rs = statement.executeQuery("SELECT * FROM MARK;");
 			while ( rs.next() ) {
-				person.add(new Person(rs.getInt("ID"),rs.getString("NICKNAME"), rs.getString("COMMENT")));
+				people.add(new Person(rs.getInt("ID"),rs.getString("NICKNAME"), rs.getString("COMMENT")));
 			}
 			rs.close();
 			statement.close();
@@ -76,9 +76,9 @@ public class DatabaseConnection {
 			System.out.println("(Find All People) done successfully");
 		} catch ( Exception e ) {
 			System.out.println(e);
-			person = null;
+			people = null;
 		}
-		return person;
+		return people;
 
 	}
 
@@ -112,19 +112,18 @@ public class DatabaseConnection {
 
 	public static Connection insertPerson(Person person){
 		connection = null;
-		Statement statement = null;
 		try {
 			connection = getConnection();
 			connection.setAutoCommit(false);
 
-			statement = connection.createStatement();
-			String sql = "INSERT INTO MARK (NICKNAME,COMMENT) " +
-					"VALUES ("+
-					"'" + person.getNickName() + "'," +
-					"'" + person.getComment() + "');";
-			statement.executeUpdate(sql);
+			String sql = "INSERT INTO MARK (NICKNAME,COMMENT) VALUES (?, ?)";
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, person.getNickName());
+			preparedStatement.setString(2, person.getComment());
+			preparedStatement.execute();
 
-			statement.close();
+			System.out.println("added " + person.getNickName());
+
 			connection.commit();
 			connection.close();
 
@@ -134,6 +133,41 @@ public class DatabaseConnection {
 			connection = null;
 		}
 
+		return connection;
+	}
+
+	public static Connection insertPerson(ArrayList<Person> people){
+		connection = null;
+		Statement statement = null;
+
+			try {
+				connection = getConnection();
+				connection.setAutoCommit(false);
+
+				for (Person person: people){
+					try {
+						String sql = "INSERT INTO MARK (NICKNAME,COMMENT) VALUES (?, ?)";
+						PreparedStatement preparedStatement = connection.prepareStatement(sql);
+						preparedStatement.setString(1, person.getNickName());
+						preparedStatement.setString(2, person.getComment());
+						preparedStatement.execute();
+
+						System.out.println("added " + person.getNickName());
+						connection.commit();
+
+					}catch (Exception e){
+						System.out.println(e);
+						System.out.println("Failed to add "+ person.getNickName());
+						System.out.println(person.getComment());
+					}
+				}
+
+				connection.close();
+				System.out.println("Finished Adding all people");
+			}catch (Exception e){
+				System.out.println(e);
+				connection = null;
+			}
 		return connection;
 	}
 
@@ -148,7 +182,7 @@ public class DatabaseConnection {
 			String sql = "CREATE TABLE MARK " +
 					"(ID                INTEGER      PRIMARY KEY    AUTOINCREMENT, " +
 					"NICKNAME           CHAR(30)     NOT NULL, " +
-					"COMMENT            VARCHAR(MAX)             ) ";
+					"COMMENT           	TEXT            ) ";
 			statement.executeUpdate(sql);
 			statement.close();
 			connection.close();
@@ -161,10 +195,5 @@ public class DatabaseConnection {
 
 		return connection;
 	}
-
-
-
-
-
 
 }

@@ -77,7 +77,7 @@ public class ScrapeYahooNewsComments{
 
                 for(int i = 0; i < commentContents.size(); i++){
                     String nickname = new Scanner(names.get(i).toString()).nextLine();
-                    nickname = nickname.substring(nickname.indexOf(">")-1,nickname.indexOf("&lt"));
+                    nickname = nickname.substring(nickname.indexOf(">")+1,nickname.indexOf("&lt"));
 
                     String comment = commentContents.get(i).toString();
                     comment = comment.substring(comment.indexOf(">")+3, comment.indexOf("&lt")-3);

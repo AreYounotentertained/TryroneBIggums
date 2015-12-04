@@ -15,7 +15,7 @@ import datalayer.DatabaseConnection;
 
 public class AppData {
 		
-	private List<Person> people = new ArrayList<Person>();
+	private ArrayList<Person> people = new ArrayList<Person>();
 	
 	// this is the reference to the single instance of the AppData class
 	private static AppData appData = null;
@@ -39,17 +39,13 @@ public class AppData {
 		
 	}
 
-	public void runScraping(String url, int maxComments) {
+	public synchronized void runScraping(String url, int maxComments) {
 		Runnable runnable = new Runnable() {
 			@Override
 			public void run() {
 				ScrapeYahooNewsComments scrapeYahooNewsComments = new ScrapeYahooNewsComments(url, maxComments);
-
 				setPeople(scrapeYahooNewsComments.getPersons());
-
-				for (Person person: people){
-					DatabaseConnection.insertPerson(person);
-				}
+				DatabaseConnection.insertPerson(people);
 			}
 		};
 
@@ -61,7 +57,7 @@ public class AppData {
 		return people;
 	}
 
-	public void setPeople(List<Person> people) {
+	public void setPeople(ArrayList<Person> people) {
 		this.people = people;
 	}
 

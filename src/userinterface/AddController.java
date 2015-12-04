@@ -43,6 +43,7 @@ public class AddController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         AppData appData = AppData.getAppData();
+        DatabaseConnection.createTable();
 
         gui_add_button_add.setOnAction(new EventHandler<ActionEvent>() {
             @Override
