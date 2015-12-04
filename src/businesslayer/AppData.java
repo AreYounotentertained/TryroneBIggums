@@ -6,6 +6,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.rjeschke.txtmark.Run;
 import datalayer.DatabaseConnection;
 
 
@@ -37,24 +38,58 @@ public class AppData {
 		return appData;
 		
 	}
-	
+
+	public void runScraping(String url, int maxComments) {
+
+		ScrapeYahooNewsComments scrapeYahooNewsComments = new ScrapeYahooNewsComments(url, maxComments);
+		scrapeYahooNewsComments.run();
+
+		Runnable runnable = new Runnable() {
+			@Override
+			public void run() {
+				try {
+					wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+
+				setPeople(scrapeYahooNewsComments.getPersons());
+
+				for (Person person: people){
+					DatabaseConnection.insertPerson(person);
+				}
+			}
+		};
+
+		new Thread(runnable).start();
+
+	}
+
+	public List<Person> getPeople() {
+		return people;
+	}
+
+	public void setPeople(List<Person> people) {
+		this.people = people;
+	}
+
 	// example of a method to change the appData from throughout the project
 	// there might be lots of there to add / remove data.
-	
-	public void addPerson(Person person){
-		
-		people.add(person); // this adds the object to the datastructures in RAM
-		
-		try {
-			Connection con = DatabaseConnection.getConnection();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Statement stmt;
-		
-		// make the insert into the database.
-		
-	}
+//
+//	public void addPerson(Person person){
+//
+//		people.add(person); // this adds the object to the datastructures in RAM
+//
+//		try {
+//			Connection con = DatabaseConnection.getConnection();
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		Statement stmt;
+//
+//		// make the insert into the database.
+//
+//	}
 	
 }

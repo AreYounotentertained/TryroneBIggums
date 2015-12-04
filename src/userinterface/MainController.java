@@ -44,15 +44,12 @@ public class MainController implements Initializable {
 
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
-        Person person1 = new Person("Mark", "Alano", 12, 123, 1344);
-        Person person2 = new Person("Bark", "Alano", 12, 123, 1344);
+
 
         ArrayList<Person> test = new ArrayList<>();
 
         main_gui_listView.setItems(currentList);
-        currentList.add(new CustomGridPane("First Name", "Last Name", "Age", "Credit Card", "SSN"));
-        currentList.add(new CustomGridPane(person1));
-        currentList.add(new CustomGridPane(person2));
+
 
         main_controller_add.setOnAction(new EventHandler<ActionEvent>() {
             @Override
