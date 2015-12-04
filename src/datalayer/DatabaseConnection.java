@@ -128,7 +128,7 @@ public class DatabaseConnection {
 			connection.commit();
 			connection.close();
 
-			System.out.println("(Insert Person " + person.getNickName() + " " + person.getNickName() + ") done successfully");
+			System.out.println("(Insert Person " + person.getNickName() + ") done successfully");
 		} catch ( Exception e ) {
 			System.out.println(e);
 			connection = null;
@@ -148,7 +148,7 @@ public class DatabaseConnection {
 			String sql = "CREATE TABLE MARK " +
 					"(ID                INTEGER      PRIMARY KEY    AUTOINCREMENT, " +
 					"NICKNAME           CHAR(30)     NOT NULL, " +
-					"COMMENT            VARCHAR(600)             ) ";
+					"COMMENT            VARCHAR(MAX)             ) ";
 			statement.executeUpdate(sql);
 			statement.close();
 			connection.close();

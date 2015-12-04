@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 /**
  * Created by gunbo on 12/3/2015.
  */
-public class ScrapeYahooNewsComments implements Runnable {
+public class ScrapeYahooNewsComments{
 
     private boolean scrapingDone = false;
     private ArrayList<Person> persons = new ArrayList<>();
@@ -22,14 +22,7 @@ public class ScrapeYahooNewsComments implements Runnable {
     public ScrapeYahooNewsComments(String url, int maxComments) {
         this.url = url;
         this.maxComments = maxComments;
-    }
 
-    public ScrapeYahooNewsComments(String url) {
-        this.url = url;
-    }
-
-    @Override
-    public void run() {
         try {
             Document document = Jsoup.connect(url).userAgent("Mozilla").get();
 
@@ -105,8 +98,11 @@ public class ScrapeYahooNewsComments implements Runnable {
 
         scrapingDone = true;
         System.out.println("Done Scraping");
-        notifyAll();
+
     }
+
+
+
 
     public String getUrl() {
         return url;

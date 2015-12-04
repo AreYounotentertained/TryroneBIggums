@@ -40,18 +40,10 @@ public class AppData {
 	}
 
 	public void runScraping(String url, int maxComments) {
-
-		ScrapeYahooNewsComments scrapeYahooNewsComments = new ScrapeYahooNewsComments(url, maxComments);
-		scrapeYahooNewsComments.run();
-
 		Runnable runnable = new Runnable() {
 			@Override
 			public void run() {
-				try {
-					wait();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+				ScrapeYahooNewsComments scrapeYahooNewsComments = new ScrapeYahooNewsComments(url, maxComments);
 
 				setPeople(scrapeYahooNewsComments.getPersons());
 
