@@ -1,5 +1,6 @@
 package userinterface;
 
+import businesslayer.AppData;
 import businesslayer.Person;
 
 import javafx.beans.InvalidationListener;
@@ -65,6 +66,29 @@ public class MainController implements Initializable {
             }
         });
 
+    }
+
+    private void updateListView(){
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    System.out.println("woke up updating gui");
+                }
+//todo
+// add appdata list from database
+//                for (Person person: AppData.getAppData().getPeople()){
+//                    currentList.add();
+//
+//                }
+
+
+            }
+        };
+
+        new Thread(runnable).start();
     }
 
     public void goToAddGUI(){
