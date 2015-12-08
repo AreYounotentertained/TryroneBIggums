@@ -56,6 +56,7 @@ public class AddController implements Initializable {
                     maxComments = 0;
                 }
                 appData.runScraping(url, maxComments);
+                MainController.updateListView();
                 primaryStage.close();
             }
         });

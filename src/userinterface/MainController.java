@@ -41,11 +41,12 @@ public class MainController implements Initializable {
     @FXML private Button main_controller_search;
 
 
-    private final ObservableList currentList = FXCollections.observableArrayList();
+
 
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
 
+        ObservableList currentList = FXCollections.observableArrayList();
 
         ArrayList<Person> test = new ArrayList<>();
 
@@ -68,7 +69,7 @@ public class MainController implements Initializable {
 
     }
 
-    private void updateListView(){
+    protected static void updateListView(){
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -91,7 +92,7 @@ public class MainController implements Initializable {
         new Thread(runnable).start();
     }
 
-    public void goToAddGUI(){
+    private void goToAddGUI(){
         Stage stageAdd = new Stage();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("gui_add.fxml"));
         Parent root = null;
