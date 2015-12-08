@@ -1,13 +1,10 @@
 package businesslayer;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.rjeschke.txtmark.Run;
 import datalayer.DatabaseConnection;
+import userinterface.MainController;
 
 
 // This is an example of using the Singleton pattern to make the application's data available throughout the 
@@ -23,7 +20,7 @@ public class AppData {
 	
 	// A private constructor that is only called one time
 	private AppData() {
-		
+
 	}
 	
 	// A public method to make the app Data available throughout the application.
@@ -39,13 +36,13 @@ public class AppData {
 		
 	}
 
-	public synchronized void runScraping(String url, int maxComments) {
+	public void runScraping(String url, int maxComments) {
 		Runnable runnable = new Runnable() {
 			@Override
 			public void run() {
 				ScrapeYahooNewsComments scrapeYahooNewsComments = new ScrapeYahooNewsComments(url, maxComments);
 				DatabaseConnection.insertPerson(scrapeYahooNewsComments.getPersons());
-				setPeople(DatabaseConnection.findAllPeople());
+				getAllPersonFromDatabase();
 			}
 		};
 
@@ -53,12 +50,32 @@ public class AppData {
 
 	}
 
-	public List<Person> getPeople() {
+	public void getAllPersonFromDatabase(){
+		setPeople(DatabaseConnection.findAllPeople());
+	}
+
+	public void searchPerson(int id){
+		ArrayList<Person> person = new ArrayList();
+		person.add(DatabaseConnection.selectPerson(id));
+		setPeople(person);
+	}
+
+	public ArrayList<Person> getPeople() {
 		return people;
 	}
 
-	public void setPeople(ArrayList<Person> people) {
-		this.people = people;
+	private void setPeople(ArrayList<Person> people) {
+
+		synchronized (MainController.lock){
+			this.people = people;
+			try {
+				System.out.println("Notifying lock");
+				MainController.lock.notifyAll();
+			}catch (Exception e){
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 	// example of a method to change the appData from throughout the project
