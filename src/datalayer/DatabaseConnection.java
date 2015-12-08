@@ -57,7 +57,7 @@ public class DatabaseConnection {
 
 	public ArrayList<Person> findAllPeople(){
 		connection = null;
-		Statement statement = null;
+		Statement statement;
 		ArrayList<Person> people = new ArrayList<>();
 
 		try {
