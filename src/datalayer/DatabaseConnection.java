@@ -157,10 +157,11 @@ public class DatabaseConnection {
 						System.out.println("added " + person.getNickName());
 						connection.commit();
 
-					}catch (Exception e){
+					}catch (SQLException e){
 						System.out.println(e);
 						System.out.println("Failed to add "+ person.getNickName());
 						System.out.println(person.getComment());
+						connection = getConnection();
 					}
 				}
 

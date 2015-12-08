@@ -53,7 +53,6 @@ public class MainController implements Initializable {
 
         main_gui_listView.setItems(currentList);
 
-
         main_controller_add.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
