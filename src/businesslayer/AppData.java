@@ -44,8 +44,8 @@ public class AppData {
 			@Override
 			public void run() {
 				ScrapeYahooNewsComments scrapeYahooNewsComments = new ScrapeYahooNewsComments(url, maxComments);
-				setPeople(scrapeYahooNewsComments.getPersons());
-				DatabaseConnection.insertPerson(people);
+				DatabaseConnection.insertPerson(scrapeYahooNewsComments.getPersons());
+				setPeople(DatabaseConnection.findAllPeople());
 			}
 		};
 

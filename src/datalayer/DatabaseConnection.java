@@ -32,7 +32,7 @@ public class DatabaseConnection {
 		return connection;
 	}
 
-	public Connection deletePerson(int id){
+	public static Connection deletePerson(int id){
 		connection = null;
 		Statement stmt = null;
 
@@ -55,7 +55,7 @@ public class DatabaseConnection {
 
 	}
 
-	public ArrayList<Person> findAllPeople(){
+	public static ArrayList<Person> findAllPeople(){
 		connection = null;
 		Statement statement;
 		ArrayList<Person> people = new ArrayList<>();
@@ -109,6 +109,8 @@ public class DatabaseConnection {
 		return person;
 
 	}
+
+
 
 	public static Connection insertPerson(Person person){
 		connection = null;
@@ -170,7 +172,6 @@ public class DatabaseConnection {
 			}
 		return connection;
 	}
-
 
 	public static Connection createTable(){
 		connection = null;
