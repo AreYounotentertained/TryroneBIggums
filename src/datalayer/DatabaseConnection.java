@@ -162,6 +162,8 @@ public class DatabaseConnection {
 						System.out.println("Failed to add "+ person.getNickName());
 						System.out.println(person.getComment());
 						connection = getConnection();
+					}catch (Exception e){
+						e.printStackTrace();
 					}
 				}
 
