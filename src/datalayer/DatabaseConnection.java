@@ -1,24 +1,14 @@
 package datalayer;
 
-import businesslayer.DatabaseProgress;
 import businesslayer.Person;
-import javafx.beans.InvalidationListener;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import org.apache.log4j.chainsaw.Main;
-import userinterface.MainController;
-
 import java.sql.*;
 import java.util.ArrayList;
-
 
 public class DatabaseConnection {
 	
 	private static Connection connection;
 
 	public static Connection getConnection() throws SQLException {
-		
 		if (connection == null || connection.isClosed()) {
 			connection = magicallyCreateNewConnection();
 		}
@@ -93,7 +83,7 @@ public class DatabaseConnection {
 		connection = null;
 		Statement statement = null;
 		ArrayList<Person> people = new ArrayList<>();
-
+		System.out.println("Identifier: " + identifier + " Search: " + searchInput);
 		try {
 			connection = getConnection();
 			connection.setAutoCommit(false);
@@ -101,16 +91,18 @@ public class DatabaseConnection {
 			ResultSet rs = null;
 			if (identifier == "ID"){
 				statement = connection.createStatement();
-				rs = statement.executeQuery("SELECT * FROM MARK where "+ identifier +"=" + searchInput + ";");
+				rs = statement.executeQuery("SELECT * FROM MARK WHERE "+ identifier +"=" + searchInput + ";");
+			}else if(identifier == "NICKNAME"){
+				statement = connection.createStatement();
+				rs = statement.executeQuery("SELECT * FROM MARK WHERE " + identifier + " LIKE '"+ searchInput +"%'");
 			}else {
-				PreparedStatement preparedStatement = connection.prepareStatement(
-						"SELECT * FROM MARK where " + identifier + "=? ");
-				preparedStatement.setString(1, "'"+searchInput+"'");
-				rs = preparedStatement.executeQuery();
+				statement = connection.createStatement();
+				rs = statement.executeQuery("SELECT * FROM MARK WHERE " + identifier + " LIKE '%"+ searchInput +"%'");
 			}
 
 			while ( rs.next() ) {
 				people.add(new Person(rs.getInt("ID"),rs.getString("NICKNAME"),rs.getString("COMMENT")));
+				System.out.println("Got " + people);
 			}
 			rs.close();
 			statement.close();
