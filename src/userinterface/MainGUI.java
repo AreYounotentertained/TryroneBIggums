@@ -12,7 +12,7 @@ public class MainGUI extends Application{
     public void start(Stage primaryStage) throws Exception{
 
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("gui_main.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../res/layout/gui_main.fxml"));
         Parent root = loader.load();
         MainController controller = loader.getController();
         controller.getPrimaryStage(primaryStage);

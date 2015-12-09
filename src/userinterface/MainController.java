@@ -1,17 +1,10 @@
 package userinterface;
 
 import businesslayer.AppData;
-import businesslayer.DatabaseProgress;
 import businesslayer.Person;
 
 import datalayer.DatabaseConnection;
 import javafx.application.Platform;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,15 +16,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -130,7 +118,7 @@ public class MainController implements Initializable {
 
     private void goToAddGUI(){
         Stage stageAdd = new Stage();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("gui_add.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../res/layout/gui_add.fxml"));
         Parent root = null;
         try {
             root = loader.load();
