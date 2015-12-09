@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -42,6 +43,7 @@ public class MainController implements Initializable {
     @FXML private Button main_controller_search;
     @FXML private TextField main_controller_textField;
     @FXML private ProgressIndicator main_controller_progressIndicator;
+    @FXML private ChoiceBox main_controller_choiceBox;
 
     public final static Object lock = new Object();
     private final ObservableList<Person> currentList = FXCollections.observableArrayList();
@@ -49,14 +51,14 @@ public class MainController implements Initializable {
 
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
+
         DatabaseConnection.createTable();
-
         AppData appData = AppData.getAppData();
-
         appData.getAllPersonFromDatabase();
         setListViewItems();
-
         main_gui_listView.setItems(currentList);
+        main_controller_choiceBox.getItems().addAll("ID","NICKNAME","COMMENT");
+        main_controller_choiceBox.getSelectionModel().selectFirst();
 
         main_controller_add.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -72,8 +74,13 @@ public class MainController implements Initializable {
             public void handle(ActionEvent event) {
                 try {
                     updateListView();
-                    int id = Integer.parseInt(main_controller_textField.getText().toString());
-                    appData.searchPerson(id);
+                    if(main_controller_textField.getText().trim().isEmpty()){
+                        throw new Exception("Empty Text");
+                    }
+
+                    appData.searchPerson(main_controller_choiceBox.getSelectionModel().getSelectedItem().toString(), main_controller_textField.getText().toString());
+                    System.out.println(main_controller_choiceBox.getSelectionModel().getSelectedItem().toString() + " "  + main_controller_textField.getText().toString());
+
                 }catch (Exception e){
                     System.out.println("Invalid Value");
                     appData.getAllPersonFromDatabase();

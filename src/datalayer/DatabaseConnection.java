@@ -89,31 +89,39 @@ public class DatabaseConnection {
 
 	}
 
-	public static Person selectPerson(int id){
+	public static ArrayList<Person> selectPerson(String identifier, String searchInput){
 		connection = null;
 		Statement statement = null;
-		Person person = new Person();
+		ArrayList<Person> people = new ArrayList<>();
+
 		try {
 			connection = getConnection();
 			connection.setAutoCommit(false);
 
-			statement = connection.createStatement();
-			ResultSet rs = statement.executeQuery("SELECT * FROM MARK where ID=" + id + ";");
+			ResultSet rs = null;
+			if (identifier == "ID"){
+				statement = connection.createStatement();
+				rs = statement.executeQuery("SELECT * FROM MARK where "+ identifier +"=" + searchInput + ";");
+			}else {
+				PreparedStatement preparedStatement = connection.prepareStatement(
+						"SELECT * FROM MARK where " + identifier + "=? ");
+				preparedStatement.setString(1, "'"+searchInput+"'");
+				rs = preparedStatement.executeQuery();
+			}
+
 			while ( rs.next() ) {
-				person.setId(rs.getInt("ID"));
-				person.setNickName(rs.getString("NICKNAME"));
-				person.setComment(rs.getString("COMMENT"));
+				people.add(new Person(rs.getInt("ID"),rs.getString("NICKNAME"),rs.getString("COMMENT")));
 			}
 			rs.close();
 			statement.close();
 			connection.close();
 
-			System.out.println("(Select Person " + id + ") done successfully");
+			System.out.println("(Select Person " + searchInput + ") done successfully");
 		} catch ( Exception e ) {
-			System.out.println(e);
-			person = null;
+			e.printStackTrace();
+			people = null;
 		}
-		return person;
+		return people;
 
 	}
 
@@ -138,7 +146,7 @@ public class DatabaseConnection {
 
 			System.out.println("(Insert Person " + person.getNickName() + ") done successfully");
 		} catch ( Exception e ) {
-			System.out.println(e);
+			e.printStackTrace();
 			connection = null;
 		}
 

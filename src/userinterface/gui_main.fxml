@@ -19,15 +19,16 @@
                   <Font name="Arial Bold" size="39.0" />
                </font>
             </Label>
-            <TextField fx:id="main_controller_textField" layoutX="51.0" layoutY="84.0" />
-            <Button fx:id="main_controller_search" layoutX="218.0" layoutY="85.0" mnemonicParsing="false" text="Search" />
-            <Button fx:id="main_controller_add" layoutX="280.0" layoutY="86.0" mnemonicParsing="false" text="Add" />
+            <TextField fx:id="main_controller_textField" layoutX="161.0" layoutY="84.0" />
+            <Button fx:id="main_controller_search" layoutX="318.0" layoutY="84.0" mnemonicParsing="false" text="Search" />
+            <Button fx:id="main_controller_add" layoutX="380.0" layoutY="84.0" mnemonicParsing="false" text="Add" />
             <ScrollPane layoutX="53.0" layoutY="125.0" prefHeight="700.0" prefWidth="1500.0">
                <content>
                   <ListView fx:id="main_gui_listView" prefHeight="690.0" prefWidth="1495.0" />
                </content>
             </ScrollPane>
-            <ProgressIndicator fx:id="main_controller_progressIndicator" layoutX="331.0" layoutY="78.0" progress="0.0" />
+            <ProgressIndicator fx:id="main_controller_progressIndicator" layoutX="430.0" layoutY="77.0" prefHeight="39.0" prefWidth="28.0" progress="0.0" />
+            <ChoiceBox fx:id="main_controller_choiceBox" layoutX="53.0" layoutY="84.0" prefHeight="25.0" prefWidth="97.0" />
          </children></Pane>
    </children>
 </AnchorPane>

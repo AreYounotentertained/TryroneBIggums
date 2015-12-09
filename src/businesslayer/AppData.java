@@ -55,9 +55,9 @@ public class AppData {
 		setPeople(DatabaseConnection.findAllPeople());
 	}
 
-	public void searchPerson(int id){
+	public void searchPerson(String identifier, String searchInput){
 		ArrayList<Person> person = new ArrayList();
-		person.add(DatabaseConnection.selectPerson(id));
+		person = DatabaseConnection.selectPerson(identifier, searchInput);
 		setPeople(person);
 	}
 
