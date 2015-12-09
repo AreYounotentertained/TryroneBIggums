@@ -1,21 +1,23 @@
 package datalayer;
 
+import businesslayer.DatabaseProgress;
 import businesslayer.Person;
 import java.sql.*;
 import java.util.ArrayList;
 
 public class DatabaseConnection {
 	
-	private static Connection connection;
+	private Connection connection;
+	private double progress = 0;
 
-	public static Connection getConnection() throws SQLException {
+	public Connection getConnection() throws SQLException {
 		if (connection == null || connection.isClosed()) {
 			connection = magicallyCreateNewConnection();
 		}
 		return connection;
 	}
 
-	private static Connection magicallyCreateNewConnection() {
+	private Connection magicallyCreateNewConnection() {
 		connection = null;
 		try{
 			Class.forName("org.sqlite.JDBC");
@@ -29,7 +31,7 @@ public class DatabaseConnection {
 		return connection;
 	}
 
-	public static Connection deletePerson(int id){
+	public Connection deletePerson(int id){
 		connection = null;
 		Statement stmt = null;
 
@@ -52,7 +54,7 @@ public class DatabaseConnection {
 
 	}
 
-	public static ArrayList<Person> findAllPeople(){
+	public ArrayList<Person> findAllPeople(){
 		connection = null;
 		Statement statement;
 		ArrayList<Person> people = new ArrayList<>();
@@ -79,7 +81,7 @@ public class DatabaseConnection {
 
 	}
 
-	public static ArrayList<Person> selectPerson(String identifier, String searchInput){
+	public ArrayList<Person> selectPerson(String identifier, String searchInput){
 		connection = null;
 		Statement statement = null;
 		ArrayList<Person> people = new ArrayList<>();
@@ -101,8 +103,7 @@ public class DatabaseConnection {
 			}
 
 			while ( rs.next() ) {
-				people.add(new Person(rs.getInt("ID"),rs.getString("NICKNAME"),rs.getString("COMMENT")));
-				System.out.println("Got " + people);
+				people.add(new Person(rs.getInt("ID"), rs.getString("NICKNAME"), rs.getString("COMMENT")));
 			}
 			rs.close();
 			statement.close();
@@ -119,7 +120,7 @@ public class DatabaseConnection {
 
 
 
-	public static Connection insertPerson(Person person){
+	public Connection insertPerson(Person person){
 		connection = null;
 		try {
 			connection = getConnection();
@@ -145,12 +146,11 @@ public class DatabaseConnection {
 		return connection;
 	}
 
-	public static Connection insertPerson(ArrayList<Person> people){
+	public Connection insertPerson(ArrayList<Person> people, DatabaseProgress databaseProgress){
 		connection = null;
 		Statement statement = null;
-//		int count = 0;
-//		int total = people.size();
-
+		int count = 0;
+		int total = people.size();
 
 			try {
 				connection = getConnection();
@@ -165,6 +165,8 @@ public class DatabaseConnection {
 						preparedStatement.execute();
 
 						System.out.println("added " + person.getNickName());
+						progress = count / total;
+						databaseProgress.setNumber(progress);
 						connection.commit();
 
 
@@ -188,7 +190,7 @@ public class DatabaseConnection {
 		return connection;
 	}
 
-	public static Connection createTable(){
+	public Connection createTable(){
 		connection = null;
 		Statement statement = null;
 		try {
@@ -212,4 +214,11 @@ public class DatabaseConnection {
 		return connection;
 	}
 
+	public double getProgress() {
+		return progress;
+	}
+
+	public void setProgress(double progress) {
+		this.progress = progress;
+	}
 }

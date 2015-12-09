@@ -1,8 +1,6 @@
 package businesslayer;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import datalayer.DatabaseConnection;
 import userinterface.MainController;
 
@@ -16,11 +14,13 @@ public class AppData {
 	
 	// this is the reference to the single instance of the AppData class
 	private static AppData appData = null;
-	
-	
+	public DatabaseProgress databaseProgress = new DatabaseProgress();
+	private DatabaseConnection databaseConnection;
+
+
 	// A private constructor that is only called one time
 	private AppData() {
-
+		databaseConnection = new DatabaseConnection();
 	}
 	
 	// A public method to make the app Data available throughout the application.
@@ -37,13 +37,15 @@ public class AppData {
 	}
 
 	public void runScraping(String url, int maxComments) {
+
 		Runnable runnable = new Runnable() {
 			@Override
 			public void run() {
 				ScrapeYahooNewsComments scrapeYahooNewsComments = new ScrapeYahooNewsComments(url, maxComments);
-				DatabaseConnection.insertPerson(scrapeYahooNewsComments.getPersons());
-				getAllPersonFromDatabase();
 
+				databaseConnection.insertPerson(scrapeYahooNewsComments.getPersons(), databaseProgress);
+
+				getAllPersonFromDatabase();
 			}
 		};
 
@@ -52,12 +54,12 @@ public class AppData {
 	}
 
 	public void getAllPersonFromDatabase(){
-		setPeople(DatabaseConnection.findAllPeople());
+		setPeople(databaseConnection.findAllPeople());
 	}
 
 	public void searchPerson(String identifier, String searchInput){
 		ArrayList<Person> person = new ArrayList();
-		person = DatabaseConnection.selectPerson(identifier, searchInput);
+		person = databaseConnection.selectPerson(identifier, searchInput);
 		setPeople(person);
 	}
 
@@ -79,23 +81,5 @@ public class AppData {
 
 	}
 
-	// example of a method to change the appData from throughout the project
-	// there might be lots of there to add / remove data.
-//
-//	public void addPerson(Person person){
-//
-//		people.add(person); // this adds the object to the datastructures in RAM
-//
-//		try {
-//			Connection con = DatabaseConnection.getConnection();
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		Statement stmt;
-//
-//		// make the insert into the database.
-//
-//	}
 	
 }

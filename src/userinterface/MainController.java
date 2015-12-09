@@ -40,13 +40,13 @@ public class MainController implements Initializable {
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
 
-        DatabaseConnection.createTable();
         AppData appData = AppData.getAppData();
         appData.getAllPersonFromDatabase();
         setListViewItems();
         main_gui_listView.setItems(currentList);
         main_controller_choiceBox.getItems().addAll("ID","NICKNAME","COMMENT");
         main_controller_choiceBox.getSelectionModel().selectFirst();
+        main_controller_progressIndicator.progressProperty().bind(appData.databaseProgress.numberProperty());
 
         main_controller_add.setOnAction(new EventHandler<ActionEvent>() {
             @Override
