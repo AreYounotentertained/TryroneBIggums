@@ -43,6 +43,7 @@ public class AppData {
 				ScrapeYahooNewsComments scrapeYahooNewsComments = new ScrapeYahooNewsComments(url, maxComments);
 				DatabaseConnection.insertPerson(scrapeYahooNewsComments.getPersons());
 				getAllPersonFromDatabase();
+
 			}
 		};
 

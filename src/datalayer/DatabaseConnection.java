@@ -1,6 +1,13 @@
 package datalayer;
 
+import businesslayer.DatabaseProgress;
 import businesslayer.Person;
+import javafx.beans.InvalidationListener;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import org.apache.log4j.chainsaw.Main;
+import userinterface.MainController;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -141,6 +148,9 @@ public class DatabaseConnection {
 	public static Connection insertPerson(ArrayList<Person> people){
 		connection = null;
 		Statement statement = null;
+//		int count = 0;
+//		int total = people.size();
+
 
 			try {
 				connection = getConnection();
@@ -157,11 +167,13 @@ public class DatabaseConnection {
 						System.out.println("added " + person.getNickName());
 						connection.commit();
 
+
 					}catch (SQLException e){
 						System.out.println(e);
 						System.out.println("Failed to add "+ person.getNickName());
 						System.out.println(person.getComment());
 						connection = getConnection();
+						connection.setAutoCommit(false);
 					}catch (Exception e){
 						e.printStackTrace();
 					}

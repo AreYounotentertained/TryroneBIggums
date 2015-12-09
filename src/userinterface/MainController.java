@@ -1,11 +1,14 @@
 package userinterface;
 
 import businesslayer.AppData;
+import businesslayer.DatabaseProgress;
 import businesslayer.Person;
 
+import datalayer.DatabaseConnection;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -38,13 +41,15 @@ public class MainController implements Initializable {
     @FXML private Button main_controller_add;
     @FXML private Button main_controller_search;
     @FXML private TextField main_controller_textField;
+    @FXML private ProgressIndicator main_controller_progressIndicator;
 
     public final static Object lock = new Object();
-    private final ObservableList currentList = FXCollections.observableArrayList();
+    private final ObservableList<Person> currentList = FXCollections.observableArrayList();
 
 
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
+        DatabaseConnection.createTable();
 
         AppData appData = AppData.getAppData();
 
@@ -57,6 +62,7 @@ public class MainController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 goToAddGUI();
+                main_controller_progressIndicator.setProgress(0);
                 updateListView();
             }
         });
@@ -94,6 +100,7 @@ public class MainController implements Initializable {
                         @Override
                         public void run() {
                             setListViewItems();
+                            main_controller_progressIndicator.setProgress(1);
                         }
                     });
 
@@ -108,7 +115,6 @@ public class MainController implements Initializable {
         AppData appData = AppData.getAppData();
 
         currentList.clear();
-
         currentList.addAll(appData.getPeople());
         System.out.println("ListView Size: " + main_gui_listView.getItems().size());
         //System.out.println(appData.getPeople());

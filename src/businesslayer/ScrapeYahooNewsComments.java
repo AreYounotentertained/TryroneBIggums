@@ -82,15 +82,19 @@ public class ScrapeYahooNewsComments{
                     nickname = nickname.substring(nickname.indexOf(">")+1,nickname.indexOf("&lt"));
 
                     String comment = commentContents.get(i).toString();
-                    comment = comment.substring(comment.indexOf(">")+3, comment.indexOf("&lt")-3);
+                    comment = comment
+                            .substring(comment.indexOf(">")+3, comment.indexOf("&lt")-3)
+                            .replaceAll("(?:\\<br\\ \\\\\\>\\\\n)", "\n")
+                            .replaceAll("(?:\\\\u)(?:201)?.", " ");
 
                     persons.add(new Person(nickname,comment));
                     maxComments--;
+                    if (maxComments == 0){
+                        return;
+                    }
                 }
 
-                if (maxComments == 0){
-                    break;
-                }
+
 
             }
 

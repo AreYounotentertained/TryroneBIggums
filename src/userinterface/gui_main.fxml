@@ -10,11 +10,11 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="userinterface.MainController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="950.0" prefWidth="1700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="userinterface.MainController">
    <children>
-      <Pane prefHeight="480.0" prefWidth="638.0">
+      <Pane prefHeight="950.0" prefWidth="1700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label layoutX="234.0" layoutY="22.0" prefHeight="46.0" prefWidth="173.0" text="Contacts">
+            <Label layoutX="51.0" layoutY="28.0" prefHeight="46.0" prefWidth="534.0" text="news.yahoo.com comments">
                <font>
                   <Font name="Arial Bold" size="39.0" />
                </font>
@@ -22,11 +22,12 @@
             <TextField fx:id="main_controller_textField" layoutX="51.0" layoutY="84.0" />
             <Button fx:id="main_controller_search" layoutX="218.0" layoutY="85.0" mnemonicParsing="false" text="Search" />
             <Button fx:id="main_controller_add" layoutX="280.0" layoutY="86.0" mnemonicParsing="false" text="Add" />
-            <ScrollPane layoutX="53.0" layoutY="125.0" prefHeight="335.0" prefWidth="550.0">
+            <ScrollPane layoutX="53.0" layoutY="125.0" prefHeight="700.0" prefWidth="1500.0">
                <content>
-                  <ListView fx:id="main_gui_listView" prefHeight="329.0" prefWidth="548.0" />
+                  <ListView fx:id="main_gui_listView" prefHeight="690.0" prefWidth="1495.0" />
                </content>
             </ScrollPane>
+            <ProgressIndicator fx:id="main_controller_progressIndicator" layoutX="331.0" layoutY="78.0" progress="0.0" />
          </children></Pane>
    </children>
 </AnchorPane>
