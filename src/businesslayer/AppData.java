@@ -8,7 +8,7 @@ import userinterface.MainController;
 // This is an example of using the Singleton pattern to make the application's data available throughout the 
 // application while guaranteeing that there is only one copy of it.
 
-public class AppData extends DatabaseConnection {
+public class AppData{
 		
 	private ArrayList<Person> people = new ArrayList<Person>();
 	
@@ -40,8 +40,9 @@ public class AppData extends DatabaseConnection {
 		Runnable runnable = new Runnable() {
 			@Override
 			public void run() {
+				DatabaseConnection databaseConnection = new DatabaseConnection();
 				ScrapeYahooNewsComments scrapeYahooNewsComments = new ScrapeYahooNewsComments(url, maxComments);
-				insertPerson(scrapeYahooNewsComments.getPersons());
+				databaseConnection.insertPerson(scrapeYahooNewsComments.getPersons());
 				getAllPersonFromDatabase();
 			}
 		};
@@ -51,12 +52,15 @@ public class AppData extends DatabaseConnection {
 	}
 
 	public void getAllPersonFromDatabase(){
-		setPeople(findAllPeople());
+		DatabaseConnection databaseConnection = new DatabaseConnection();
+		setPeople(databaseConnection.findAllPeople());
 	}
 
 	public void searchPerson(String identifier, String searchInput){
+		DatabaseConnection databaseConnection = new DatabaseConnection();
+
 		ArrayList<Person> person = new ArrayList();
-		person = selectPerson(identifier, searchInput);
+		person = databaseConnection.selectPerson(identifier, searchInput);
 		setPeople(person);
 	}
 
