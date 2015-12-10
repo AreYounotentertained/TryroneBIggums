@@ -8,19 +8,18 @@ import userinterface.MainController;
 // This is an example of using the Singleton pattern to make the application's data available throughout the 
 // application while guaranteeing that there is only one copy of it.
 
-public class AppData {
+public class AppData extends DatabaseConnection {
 		
 	private ArrayList<Person> people = new ArrayList<Person>();
 	
 	// this is the reference to the single instance of the AppData class
 	private static AppData appData = null;
-	public DatabaseProgress databaseProgress = new DatabaseProgress();
-	private DatabaseConnection databaseConnection;
+
 
 
 	// A private constructor that is only called one time
 	private AppData() {
-		databaseConnection = new DatabaseConnection();
+
 	}
 	
 	// A public method to make the app Data available throughout the application.
@@ -42,9 +41,7 @@ public class AppData {
 			@Override
 			public void run() {
 				ScrapeYahooNewsComments scrapeYahooNewsComments = new ScrapeYahooNewsComments(url, maxComments);
-
-				databaseConnection.insertPerson(scrapeYahooNewsComments.getPersons(), databaseProgress);
-
+				insertPerson(scrapeYahooNewsComments.getPersons());
 				getAllPersonFromDatabase();
 			}
 		};
@@ -54,12 +51,12 @@ public class AppData {
 	}
 
 	public void getAllPersonFromDatabase(){
-		setPeople(databaseConnection.findAllPeople());
+		setPeople(findAllPeople());
 	}
 
 	public void searchPerson(String identifier, String searchInput){
 		ArrayList<Person> person = new ArrayList();
-		person = databaseConnection.selectPerson(identifier, searchInput);
+		person = selectPerson(identifier, searchInput);
 		setPeople(person);
 	}
 
