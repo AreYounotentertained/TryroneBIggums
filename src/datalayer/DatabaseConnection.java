@@ -1,14 +1,15 @@
 package datalayer;
 
-import businesslayer.DatabaseProgress;
 import businesslayer.Person;
+import businesslayer.Context;
+
 import java.sql.*;
 import java.util.ArrayList;
 
 public class DatabaseConnection {
 	
 	private Connection connection;
-	private double progress = 0;
+
 
 	public Connection getConnection() throws SQLException {
 		if (connection == null || connection.isClosed()) {
@@ -146,13 +147,14 @@ public class DatabaseConnection {
 		return connection;
 	}
 
-	public Connection insertPerson(ArrayList<Person> people, DatabaseProgress databaseProgress){
+	public Connection insertPerson(ArrayList<Person> people){
 		connection = null;
 		Statement statement = null;
-		int count = 0;
 		int total = people.size();
+		int count = 0;
+		Context context = Context.getInstance();
 
-			try {
+		try {
 				connection = getConnection();
 				connection.setAutoCommit(false);
 
@@ -165,8 +167,12 @@ public class DatabaseConnection {
 						preparedStatement.execute();
 
 						System.out.println("added " + person.getNickName());
-						progress = count / total;
-						databaseProgress.setNumber(progress);
+						count++;
+						if ((double)count / (double) total < .01){
+							context.getDatabaseProgress().setNumber(.01);
+						}else {
+							context.getDatabaseProgress().setNumber((double)count/(double)total);
+						}
 						connection.commit();
 
 
@@ -214,11 +220,5 @@ public class DatabaseConnection {
 		return connection;
 	}
 
-	public double getProgress() {
-		return progress;
-	}
 
-	public void setProgress(double progress) {
-		this.progress = progress;
-	}
 }

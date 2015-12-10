@@ -1,9 +1,9 @@
 package userinterface;
 
 import businesslayer.AppData;
+import businesslayer.Context;
 import businesslayer.Person;
 
-import datalayer.DatabaseConnection;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -37,22 +37,28 @@ public class MainController implements Initializable {
     private final ObservableList<Person> currentList = FXCollections.observableArrayList();
 
 
+
+
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
-
+        Context context = Context.getInstance();
+        context.getDatabaseProgress().setNumber(0);
         AppData appData = AppData.getAppData();
         appData.getAllPersonFromDatabase();
         setListViewItems();
         main_gui_listView.setItems(currentList);
         main_controller_choiceBox.getItems().addAll("ID","NICKNAME","COMMENT");
         main_controller_choiceBox.getSelectionModel().selectFirst();
-        main_controller_progressIndicator.progressProperty().bind(appData.databaseProgress.numberProperty());
+        main_controller_progressIndicator.progressProperty().bind(context.getDatabaseProgress().numberProperty());
+
+
+
+
 
         main_controller_add.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 goToAddGUI();
-                main_controller_progressIndicator.setProgress(0);
                 updateListView();
             }
         });
@@ -95,7 +101,6 @@ public class MainController implements Initializable {
                         @Override
                         public void run() {
                             setListViewItems();
-                            main_controller_progressIndicator.setProgress(1);
                         }
                     });
 
