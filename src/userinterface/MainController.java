@@ -32,6 +32,7 @@ public class MainController implements Initializable {
     @FXML private TextField main_controller_textField;
     @FXML private ProgressIndicator main_controller_progressIndicator;
     @FXML private ChoiceBox main_controller_choiceBox;
+    @FXML private Button main_gui_button_deleteSelectedItem;
 
     public final static Object lock = new Object();
     private final ObservableList<Person> currentList = FXCollections.observableArrayList();
@@ -80,6 +81,19 @@ public class MainController implements Initializable {
                     appData.getAllPersonFromDatabase();
                 }
 
+            }
+        });
+
+        main_gui_button_deleteSelectedItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    appData.deletePerson(main_gui_listView.getSelectionModel().getSelectedItem().getId());
+                }catch (NullPointerException e){
+                    System.out.println("No selection");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
 
